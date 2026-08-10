@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8081/api/expenses';
+// Uses VITE_API_URL / REACT_APP_API_URL if set, otherwise defaults to your live Render backend
+const BASE_URL = process.env.REACT_APP_API_URL || 'https://farmer-expense-tracker-using-ocr.onrender.com';
+const API_URL = `${BASE_URL}/api/expenses`;
 
 export const getExpenses = async (userId) => {
-  // This sends: /api/expenses?userId=1
+  // This sends: /api/expenses/user/1
   const response = await axios.get(`${API_URL}/user/${userId}`);
   return response.data;
 };
@@ -14,14 +16,13 @@ export const getExpenseById = async (id) => {
 };
 
 export const createExpense = async (Data) => {
-    try {
-        // Note: Your controller expects a JSON @RequestBody
-        const response = await axios.post(API_URL, Data);
-        return response.data;
-    } catch (error) {
-        console.error("Full error object:", error.response); // Look at this in F12 console
-        throw error;
-    }
+  try {
+    const response = await axios.post(API_URL, Data);
+    return response.data;
+  } catch (error) {
+    console.error("Full error object:", error.response);
+    throw error;
+  }
 };
 
 export const updateExpense = async (id, expense) => {
@@ -34,14 +35,14 @@ export const deleteExpense = async (id) => {
 };
 
 export const uploadReceipt = async (file, userId) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('userId', userId); // <--- ADD THIS
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('userId', userId);
 
-    const response = await axios.post(`${API_URL}/upload-receipt`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    return response.data;
+  const response = await axios.post(`${API_URL}/upload-receipt`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  });
+  return response.data;
 };
 
 export const getTotalExpenses = async () => {
@@ -58,4 +59,3 @@ export const searchExpenses = async (searchTerm) => {
   const response = await axios.get(`${API_URL}/search?q=${encodeURIComponent(searchTerm)}`);
   return response.data;
 };
-
