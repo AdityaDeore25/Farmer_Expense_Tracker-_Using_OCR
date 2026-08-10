@@ -1,43 +1,52 @@
-// src/components/auth/Register.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './Login.css'; // Using shared styles
+import './Auth.css';
 
-function Register() {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '' });
+const Register = ({ onRegisterSuccess }) => {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    // Registration submission logic here
+    if (onRegisterSuccess) onRegisterSuccess();
+  };
 
   return (
     <div className="auth-container">
-      <div className="auth-image-side" style={{backgroundImage: "url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80')"}}>
-        <h1>Join Krishi-Dhan</h1>
-        <p>Start tracking your farm investments today.</p>
-      </div>
-      <div className="auth-form-side">
-        <div className="auth-card">
-          <h2>Create Account</h2>
-          <p className="auth-subtitle">Join our community of smart farmers</p>
-          <form>
-            <div className="auth-input-group">
-              <label>Full Name</label>
-              <input type="text" placeholder="Farmer Name" required />
-            </div>
-            <div className="auth-input-group">
-              <label>Email Address</label>
-              <input type="email" placeholder="email@farm.com" required />
-            </div>
-            <div className="auth-input-group">
-              <label>Password</label>
-              <input type="password" placeholder="Create password" required />
-            </div>
-            <button type="submit" className="auth-btn">Register</button>
-          </form>
-          <div className="auth-footer">
-            Already a member? <Link to="/login">Login here</Link>
-          </div>
+      <h2>Register</h2>
+      <form onSubmit={handleRegister}>
+        <div className="form-group">
+          <label>Username</label>
+          <input 
+            type="text" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            required 
+          />
         </div>
-      </div>
+        <div className="form-group">
+          <label>Email</label>
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          <input 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+          />
+        </div>
+        <button type="submit">Sign Up</button>
+      </form>
     </div>
   );
-}
+};
 
 export default Register;
