@@ -16,11 +16,8 @@ const ExpenseCharts = ({ expenses }) => {
       monthlyTotals[monthIndex].total += Number(expense.amount);
     });
 
-    // Filter to show only months that have data or the current year
     return monthlyTotals;
   }, [expenses]);
-
-  const COLORS = ['#2d5a27', '#4caf50', '#81c784', '#a5d6a7'];
 
   return (
     <div className="charts-wrapper">
@@ -32,7 +29,7 @@ const ExpenseCharts = ({ expenses }) => {
             <XAxis dataKey="name" axisLine={false} tickLine={false} />
             <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `₹${value}`} />
             <Tooltip 
-              cursor={{fill: '#f5f5f5'}}
+              cursor={{ fill: '#f5f5f5' }}
               contentStyle={{ borderRadius: '10px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
             />
             <Bar dataKey="total" radius={[4, 4, 0, 0]}>
