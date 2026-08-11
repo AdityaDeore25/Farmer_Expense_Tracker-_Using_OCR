@@ -12,7 +12,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   // Ensure this points to your active Spring Boot backend URL on Render
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://farmer-expense-tracker-using-ocr.onrender.com';
+const API_BASE_URL = 'https://farmer-expense-tracker-using-ocr.onrender.com';
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
