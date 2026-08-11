@@ -11,23 +11,21 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  // Replace with your actual backend URL running on Render
-  const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://your-backend-api.onrender.com';
-
+  // Ensure this points to your active Spring Boot backend URL on Render
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://farmer-expense-tracker-using-ocr.onrender.com';
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      // 1. Send register request to Spring Boot backend
       await axios.post(`${API_BASE_URL}/api/auth/register`, {
         username,
         email,
         password
       });
 
-      // 2. Redirect user to login page after registration
+      // Redirect to login page upon success
       navigate('/login');
     } catch (err) {
       console.error('Registration error:', err);
@@ -38,12 +36,12 @@ const Register = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', background: '#fff', borderRadius: '8px' }}>
-      <h2>Register</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+    <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', background: '#fff', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+      <h2 style={{ color: '#2d5a27', marginBottom: '20px' }}>Register</h2>
+      {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
       <form onSubmit={handleRegister}>
         <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px' }}>Username</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Username</label>
           <input 
             type="text" 
             value={username} 
@@ -53,7 +51,7 @@ const Register = () => {
           />
         </div>
         <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px' }}>Email</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Email</label>
           <input 
             type="email" 
             value={email} 
@@ -63,7 +61,7 @@ const Register = () => {
           />
         </div>
         <div style={{ marginBottom: '15px' }}>
-          <label style={{ display: 'block', marginBottom: '5px' }}>Password</label>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Password</label>
           <input 
             type="password" 
             value={password} 
@@ -75,7 +73,7 @@ const Register = () => {
         <button 
           type="submit" 
           disabled={loading}
-          style={{ width: '100%', padding: '10px', backgroundColor: '#2d5a27', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+          style={{ width: '100%', padding: '10px', backgroundColor: '#2d5a27', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
         >
           {loading ? 'Registering...' : 'Sign Up'}
         </button>
