@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './Auth.css';
+// Commented out missing CSS file:
+// import './Auth.css';
 
 const Register = ({ onRegisterSuccess }) => {
   const [username, setUsername] = useState('');
@@ -8,7 +9,6 @@ const Register = ({ onRegisterSuccess }) => {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // Registration submission logic here
     if (onRegisterSuccess) onRegisterSuccess();
   };
 
