@@ -20,8 +20,21 @@ function DashboardContent() {
   const [activeTab, setActiveTab] = useState('list');
   const [selectedCategory, setSelectedCategory] = useState('');
   
-  const userData = localStorage.getItem('user');
-  const user = userData ? JSON.parse(userData) : { fullName: 'Farmer', role: 'USER' };
+  // Safely retrieve user from localStorage with fallbacks
+  const getUserData = () => {
+    try {
+      const storedData = localStorage.getItem('user');
+      return storedData ? JSON.parse(storedData) : null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const user = getUserData() || { fullName: 'Farmer', username: 'Farmer', role: 'USER' };
+  
+  // Resolve user display name safely
+  const displayName = user.fullName || user.username || user.email || 'Farmer';
+  const userInitial = displayName?.charAt(0)?.toUpperCase() || 'F';
   const isAdmin = user.role === 'ADMIN';
 
   useEffect(() => {
@@ -29,21 +42,18 @@ function DashboardContent() {
   }, []);
 
   const loadData = async () => {
-      try {
-          // 1. Get user from storage
-          const userData = localStorage.getItem('user');
-          if (!userData) return;
-          
-          const user = JSON.parse(userData);
-          
-          // 2. Pass the user.id to the service
-          // Make sure user.id exists (depends on your Login response)
-          const data = await getExpenses(user.id); 
-          
-          setExpenses(data || []);
-      } catch (error) {
-          console.error('Error loading user expenses:', error);
-      }
+    try {
+      const userData = getUserData();
+      if (!userData) return;
+      
+      const userId = userData.id || userData.userId;
+      if (!userId) return;
+
+      const data = await getExpenses(userId); 
+      setExpenses(data || []);
+    } catch (error) {
+      console.error('Error loading user expenses:', error);
+    }
   };
 
   const total = expenses.reduce((sum, exp) => sum + parseFloat(exp.amount || 0), 0);
@@ -65,12 +75,13 @@ function DashboardContent() {
       <main className="main-viewport">
         <header className="top-bar">
           <div className="welcome-text">
-            <h2>Hello, {user.fullName}!</h2>
+            <h2>Hello, {displayName}!</h2>
             <p>{new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
           </div>
           <div className="top-bar-actions">
             <div className="weather-chip">☀️ 41°C | Pune</div>
-            <div className="profile-chip">{user.fullName.charAt(0)}</div>
+            {/* Safe initial extraction fixing line 73 crash */}
+            <div className="profile-chip">{userInitial}</div>
           </div>
         </header>
         <HeroSection totalAmount={total} />
