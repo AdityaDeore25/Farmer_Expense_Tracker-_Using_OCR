@@ -2,6 +2,20 @@ import React from 'react';
 import './Navbar.css';
 
 const Navbar = ({ activeTab, setActiveTab }) => {
+  // Safely parse local storage user
+  const getUserInitials = () => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      if (!storedUser) return 'U';
+      
+      const user = JSON.parse(storedUser);
+      const name = user?.username || user?.email || user?.name || 'User';
+      return name.charAt(0).toUpperCase();
+    } catch (e) {
+      return 'U';
+    }
+  };
+
   return (
     <nav className="main-nav">
       <div className="nav-logo">
@@ -30,7 +44,7 @@ const Navbar = ({ activeTab, setActiveTab }) => {
       </div>
       <div className="nav-profile">
         <div className="weather-widget">☀️ 31°C</div>
-        <div className="user-avatar">JD</div>
+        <div className="user-avatar">{getUserInitials()}</div>
       </div>
     </nav>
   );
